@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { UsersModule } from './users/users.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { dataSourceOptions } from './typeorm/data-source.backend';
+import ormConfig from './orm-config';
 
 @Module({
   imports: [
@@ -10,7 +10,7 @@ import { dataSourceOptions } from './typeorm/data-source.backend';
       isGlobal: true,
       envFilePath: '.env',
     }),
-    TypeOrmModule.forRootAsync(dataSourceOptions),
+    TypeOrmModule.forRoot(ormConfig),
     UsersModule,
   ],
   controllers: [],
