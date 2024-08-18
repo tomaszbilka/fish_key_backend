@@ -5,11 +5,15 @@ import * as bcrypt from 'bcrypt';
 import hashPassword from 'src/common/helpers/hashPassword';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
+import { JwtService } from '@nestjs/jwt';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class AuthService {
   constructor(
+    private configService: ConfigService,
     private usersService: UsersService,
+    private jwtService: JwtService,
     @InjectRepository(UserEntity)
     private userRepository: Repository<UserEntity>,
   ) {}
@@ -45,5 +49,15 @@ export class AuthService {
     const { password, ...loginUser } = user;
 
     return loginUser;
+  }
+
+  async login(user: UserEntity) {
+    const payload = { email: user.email, sub: user.id };
+
+    return {
+      access_token: this.jwtService.sign(payload, {
+        secret: this.configService.get<string>('JWT_SECRET'),
+      }),
+    };
   }
 }
