@@ -7,15 +7,18 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { LocalAuthGuard } from './guards/local-auth.guard';
 import { CreateUserDto } from './dto/create-user.dto';
-import { UserEntity } from 'src/users/user.entity';
+import { LocalAuthGuard } from './guards/local-auth.guard';
 import { Public } from 'src/common/decorators/public.decorator';
+import { Serialize } from 'src/common/interceptors/serialize.interceptor';
+import { UserEntity } from 'src/users/user.entity';
+import { UserSerializeDto } from './dto/user-serialize.dto';
 
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
+  @Serialize(UserSerializeDto)
   @Public()
   @Post('register')
   async register(@Body() createUserDto: CreateUserDto): Promise<UserEntity> {
