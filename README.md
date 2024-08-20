@@ -34,3 +34,37 @@ yarn db:drop
 # seed data base
 yarn db:seed
 ```
+
+## Endpoints
+
+- register
+
+```bash
+POST /auth/register
+#body
+{
+    "email":
+    "password":
+}
+#response, status 201:
+{
+    "id":
+    "email":
+}
+```
+
+- login
+
+```bash
+POST /auth/login
+#body
+{
+    "email":
+    "password":
+}
+#response, status 201:
+{
+    access_token:
+}
+#access token should be used as a Bearer authorization.
+```
