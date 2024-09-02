@@ -19,8 +19,6 @@ $ yarn start:prod
 
 ## Migrations
 
-## Migrations
-
 ```bash
 # create migration
 yarn db:create /src/migrations/<migration_name>
