@@ -10,10 +10,12 @@ import { AuthController } from './auth.controller';
 import { JwtModule, JwtService } from '@nestjs/jwt';
 import { JwtStrategy } from './strategy/jwt.strategy';
 import { ConfigService } from '@nestjs/config';
+import { EmailModule } from 'src/common/emials/emails.module';
 
 @Module({
   imports: [
     UsersModule,
+    EmailModule,
     TypeOrmModule.forFeature([UserEntity]),
     PassportModule,
     JwtModule.registerAsync({

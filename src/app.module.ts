@@ -6,6 +6,7 @@ import { UsersModule } from './users/users.module';
 import ormConfig from './orm-config';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
+import { EmailModule } from './common/emials/emails.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
     TypeOrmModule.forRoot(ormConfig),
     UsersModule,
     AuthModule,
+    EmailModule,
   ],
   controllers: [],
   providers: [

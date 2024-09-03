@@ -1,0 +1,6 @@
+{
+  "name": "fish-key-reverse-proxy",
+  "scripts": {
+    "dev": "caddy run"
+  }
+}

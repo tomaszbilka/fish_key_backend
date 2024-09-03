@@ -7,6 +7,8 @@ import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
+import { EmailService } from 'src/common/emials/email.service';
+import { getWelcomeTemplate } from 'src/common/emials/templates/utils';
 
 @Injectable()
 export class AuthService {
@@ -14,6 +16,7 @@ export class AuthService {
     private configService: ConfigService,
     private usersService: UsersService,
     private jwtService: JwtService,
+    private emailService: EmailService,
     @InjectRepository(UserEntity)
     private userRepository: Repository<UserEntity>,
   ) {}
@@ -30,6 +33,15 @@ export class AuthService {
     const newUser = { email, password: hashedPassword };
 
     const user = this.userRepository.create(newUser);
+
+    const html = getWelcomeTemplate(user.email);
+
+    await this.emailService.sendEmail({
+      to: user.email,
+      from: 'test@test.com',
+      subject: 'Welcome',
+      html,
+    });
 
     return this.userRepository.save(user);
   }
