@@ -13,6 +13,7 @@ import { Public } from 'src/common/decorators/public.decorator';
 import { Serialize } from 'src/common/interceptors/serialize.interceptor';
 import { UserEntity } from 'src/users/user.entity';
 import { UserSerializeDto } from './dto/user-serialize.dto';
+import { ForgotPasswordDto } from './dto/forgot-password.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -35,6 +36,16 @@ export class AuthController {
   @Post('login')
   async login(@Request() req) {
     return this.authService.login(req.user);
+  }
+
+  @Public()
+  @Post('forgot-password')
+  async forgotPassword(@Body() forgotPasswordDto: ForgotPasswordDto) {
+    const resetData = await this.authService.forgotPassword(
+      forgotPasswordDto.email,
+    );
+
+    return { message: 'Password reset email sent successfully' };
   }
 
   @Get('test')
