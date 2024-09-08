@@ -1,5 +1,5 @@
-const fs = require('fs');
-const path = require('path');
+import * as fs from 'fs';
+import * as path from 'path';
 
 export function getWelcomeTemplate(email: string) {
   const templatePath = path.join(__dirname, 'welcome.html');
@@ -9,7 +9,7 @@ export function getWelcomeTemplate(email: string) {
 
 export function getResstPasswordTemplate(resetLink: string) {
   const templatePath = path.join(__dirname, 'reset-password.html');
-  let template = fs.readFileSync(templatePath, 'utf8');
+  const template = fs.readFileSync(templatePath, 'utf8');
 
   return template.replace('{{resetLink}}', resetLink);
 }
