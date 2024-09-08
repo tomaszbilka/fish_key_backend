@@ -1,7 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from './user.entity';
 import { Repository } from 'typeorm';
+import hashPassword from 'src/common/helpers/hashPassword';
 
 @Injectable()
 export class UsersService {
@@ -10,11 +11,19 @@ export class UsersService {
     private readonly userRepository: Repository<UserEntity>,
   ) {}
 
-  createUser() {
-    return 'user created';
+  public async resetPassword(userId: number, newPassword: string) {
+    const user = await this.userRepository.findOne({ where: { id: userId } });
+
+    if (!user) throw new NotFoundException('User not found');
+
+    const hashedPassword = await hashPassword(newPassword);
+
+    await this.userRepository.update(userId, {
+      password: hashedPassword,
+    });
   }
 
-  async findByEmail(email: string): Promise<UserEntity> {
+  public async findByEmail(email: string): Promise<UserEntity> {
     return await this.userRepository.findOne({ where: { email } });
   }
 
@@ -24,5 +33,9 @@ export class UsersService {
 
   deleteUser() {
     return 'userDeleted';
+  }
+
+  createUser() {
+    return 'user created';
   }
 }

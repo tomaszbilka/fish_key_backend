@@ -11,12 +11,13 @@ import { JwtModule, JwtService } from '@nestjs/jwt';
 import { JwtStrategy } from './strategy/jwt.strategy';
 import { ConfigService } from '@nestjs/config';
 import { EmailModule } from 'src/common/emials/emails.module';
+import { ResetTokenEntity } from './resetToken.entity';
 
 @Module({
   imports: [
     UsersModule,
     EmailModule,
-    TypeOrmModule.forFeature([UserEntity]),
+    TypeOrmModule.forFeature([UserEntity, ResetTokenEntity]),
     PassportModule,
     JwtModule.registerAsync({
       useFactory(configService: ConfigService) {
