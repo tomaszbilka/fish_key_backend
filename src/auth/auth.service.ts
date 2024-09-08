@@ -34,6 +34,28 @@ export class AuthService {
     private resetTokenRepository: Repository<ResetTokenEntity>,
   ) {}
 
+  private async getOneByToken(resetToken: string) {
+    const resetTokenDB = await this.resetTokenRepository.findOne({
+      where: { resetToken },
+      relations: ['user'],
+    });
+
+    if (!resetTokenDB) throw new NotFoundException('Invalid token');
+
+    if (resetTokenDB.expiresAt < new Date()) {
+      await this.deleteToken(resetTokenDB.id);
+      throw new NotFoundException('Token expired');
+    }
+
+    return resetTokenDB;
+  }
+
+  private async deleteToken(id: number) {
+    const deletedToken = await this.resetTokenRepository.delete(id);
+
+    if (!deletedToken) throw new NotFoundException('Token not found');
+  }
+
   public async register(email: string, password: string): Promise<UserEntity> {
     const existingUser = await this.usersService.findByEmail(email);
 
@@ -120,7 +142,7 @@ export class AuthService {
 
     await this.resetTokenRepository.save(resetData);
 
-    const resetLink = `${this.configService.get<string>('CORS_ORIGIN')}/auth/reset-password/?resetToken=${resetToken}&email=${email}`;
+    const resetLink = `${this.configService.get<string>('CORS_ORIGIN')}/auth/reset-password/?resetToken=${resetToken}`;
 
     const html = getResstPasswordTemplate(resetLink);
 
@@ -130,5 +152,13 @@ export class AuthService {
       subject: 'Reset your password',
       html,
     });
+  }
+
+  public async resetPassword(resetToken: string, newPassword: string) {
+    const tokenEntity = await this.getOneByToken(resetToken);
+
+    await this.usersService.resetPassword(tokenEntity.user.id, newPassword);
+
+    await this.deleteToken(tokenEntity.id);
   }
 }

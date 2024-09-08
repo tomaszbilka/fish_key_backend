@@ -66,3 +66,32 @@ POST /auth/login
 }
 #access token should be used as a Bearer authorization.
 ```
+
+- forgot password
+
+```bash
+POST /auth/forgot-password
+#body
+{
+    "email":
+}
+#response, status 201:
+{
+    "message": "Password reset email sent successfully"
+}
+```
+
+- reset password
+
+```bash
+POST /auth/reset-password
+#body
+{
+    "resetToken":
+    "newPassword":
+}
+#response, status 201:
+{
+     message: 'Password reset successfully'
+}
+```
