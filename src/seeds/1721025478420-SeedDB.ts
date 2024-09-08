@@ -5,11 +5,11 @@ export class SeedDB1721025478420 implements MigrationInterface {
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
-      //password 123
+      //password123
       `INSERT INTO users  (email, password) VALUES (
-            'bbdevpl@gmail.com', '$2b$10$hFZeriyKhDdh9XVoR4xB/ujcuwAx8t5VrcXhMqNIQdop6uglNKkOe'
+            'bbdevpl@gmail.com', '$2b$10$Y7ltmHChpPY4cZXsn7p7HuvXS2lCWDdCTpkjOKwd6weiTdIrIek7i'
         ), (
-            'admin@user.pl', '$2b$10$hFZeriyKhDdh9XVoR4xB/ujcuwAx8t5VrcXhMqNIQdop6uglNKkOe' 
+            'admin@user.pl', '$2b$10$Y7ltmHChpPY4cZXsn7p7HuvXS2lCWDdCTpkjOKwd6weiTdIrIek7i' 
         )`,
     );
   }

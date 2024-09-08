@@ -93,9 +93,7 @@ export class AuthService {
 
     if (!isPasswordValid) return null;
 
-    const { password, ...loginUser } = user;
-
-    return loginUser;
+    return user;
   }
 
   async login(user: UserEntity) {
