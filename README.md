@@ -30,7 +30,7 @@ yarn db:migrate
 yarn db:drop
 
 # seed data base
-yarn db:seed
+yarn db:seeds
 ```
 
 ## Endpoints
